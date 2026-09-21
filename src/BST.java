@@ -84,8 +84,32 @@ public class BST {
         }
     }
 
-    private void deleteRoot() {
 
+    /**
+     * Remove the root of this tree, assuming the tree is non-empty
+     */
+    private void deleteRoot() {
+        if (this.left.isEmpty() && this.right.isEmpty()) {
+            this.root = null;
+            this.left = null;
+            this.right = null;
+        } else if (this.left.isEmpty()) {
+            // "Promote" the right subtree.
+            this.root = this.right.root;
+            this.left = this.right.left;
+            this.right = this.right.right;
+        } else if (this.right.isEmpty()) {
+            // "Promote" the left subtree.
+            this.root = this.left.root;
+            this.left = this.left.left;
+            this.right = this.left.right;
+        } else {
+            // Both subtrees are non-empty. Can choose to replace the root
+            // from either the max value of the left subtree, or the min value
+            // of the right subtree.
+            // (Implementations are very similar, but we'll take the max from the left here.)
+            this.root = this.left.extractMax();
+        }
     }
 
 
