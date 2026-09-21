@@ -47,6 +47,11 @@ public class BST {
     }
 
 
+    /**
+     * Insert item into the tree.
+     *
+     * @param item the item
+     */
     public void insert(int item) {
 
         if (this.isEmpty()) {
