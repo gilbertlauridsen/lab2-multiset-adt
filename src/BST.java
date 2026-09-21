@@ -68,8 +68,20 @@ public class BST {
     }
 
 
+    /**
+     * Remove *one* occurrence of <item> from this BST.
+     * Do nothing if <item> is not in the BST.
+     *
+     * @param item the item
+     */
     public void delete(int item) {
-
+        if (this.root == item) {
+            this.deleteRoot();
+        } else if (item < this.root) {
+            this.left.delete(item);
+        } else {
+            this.right.delete(item);
+        }
     }
 
     private void deleteRoot() {
