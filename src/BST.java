@@ -29,8 +29,7 @@ public class BST {
 
 
     public boolean isEmpty() {
-        return root==null;
-        // Correct one
+        return root == null;
     }
 
     public boolean contains(int item) {
@@ -53,18 +52,15 @@ public class BST {
      * @param item the item
      */
     public void insert(int item) {
-
         if (this.isEmpty()) {
             this.root = item;
             this.left = new BST();
             this.right = new BST();
-        } else if (item <= this.root ) {
+        } else if (item <= this.root) {
             this.left.insert(item);
         } else {
             this.right.insert(item);
         }
-
-
     }
 
 
@@ -75,7 +71,9 @@ public class BST {
      * @param item the item
      */
     public void delete(int item) {
-        if (this.root == item) {
+        if (this.isEmpty()) {
+            return;
+        } else if (this.root == item) {
             this.deleteRoot();
         } else if (item < this.root) {
             this.left.delete(item);
@@ -100,9 +98,11 @@ public class BST {
             this.right = this.right.right;
         } else if (this.right.isEmpty()) {
             // "Promote" the left subtree.
-            this.root = this.left.root;
-            this.left = this.left.left;
-            this.right = this.left.right;
+            // Save the old left subtree first, since we overwrite this.left below.
+            BST oldLeft = this.left;
+            this.root = oldLeft.root;
+            this.left = oldLeft.left;
+            this.right = oldLeft.right;
         } else {
             // Both subtrees are non-empty. Can choose to replace the root
             // from either the max value of the left subtree, or the min value
@@ -113,20 +113,58 @@ public class BST {
     }
 
 
+    /**
+     * Remove and return the maximum item stored in this tree.
+     * Precondition: this tree is non-empty.
+     *
+     * @return the maximum item that was removed
+     */
     private int extractMax() {
-        return -1;
+        if (this.right.isEmpty()) {
+            int maxItem = this.root;
+            // "Promote" the left subtree.
+            BST oldLeft = this.left;
+            this.root = oldLeft.root;
+            this.left = oldLeft.left;
+            this.right = oldLeft.right;
+            return maxItem;
+        }
+        return this.right.extractMax();
     }
 
+    /**
+     * @return the height of this BST
+     */
     public int height() {
-        return -1;
+        if (this.isEmpty()) {
+            return 0;
+        }
+        return Math.max(this.left.height(), this.right.height()) + 1;
     }
 
+    /**
+     * @param item the item to count
+     * @return the number of occurrences of item in this BST
+     */
     public int count(int item) {
-        return -1;
+        if (this.isEmpty()) {
+            return 0;
+        } else if (this.root > item) {
+            return this.left.count(item);
+        } else if (this.root == item) {
+            return 1 + this.left.count(item) + this.right.count(item);
+        }
+        return this.right.count(item);
     }
 
+    /**
+     * @return the number of items in this BST
+     */
     public int getSize() {
-        return -1;
+        if (this.isEmpty()) {
+            return 0;
+        }
+        return 1 + this.left.getSize() + this.right.getSize();
     }
 
     public static void main(String[] args) {
